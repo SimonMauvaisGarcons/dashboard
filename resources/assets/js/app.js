@@ -15,8 +15,11 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('exemple', require('./components/ExampleComponent.vue'));
+Vue.component('heure', require('./components/HeureComponent.vue'));
+Vue.component('date', require('./components/DateComponent.vue'));
+Vue.component('calendrier', require('./components/CalendrierComponent.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#dashboard'
 });

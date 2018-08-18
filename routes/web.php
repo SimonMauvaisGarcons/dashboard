@@ -14,3 +14,16 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+/*
+* Dashboard routes
+*/
+Route::prefix('dashboard')->group(function () {
+
+    /*
+    * Dashboard landing page
+    */
+    Route::get('/', function () {
+        return view('dashboard');
+    });
+});
