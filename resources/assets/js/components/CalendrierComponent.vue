@@ -38,11 +38,11 @@ export default {
     },
     created() {
         this.refreshTime();
-        setInterval(this.refreshTime, 10000);
+        setInterval(this.refreshTime, 1000);
     },
     methods: {
 
-         refreshTime() {
+        refreshTime() {
            this.annee = this.date.getFullYear();
            this.moi = this.date.getMonth();
            this.jour_courrant = this.date.getDate();

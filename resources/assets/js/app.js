@@ -19,6 +19,8 @@ Vue.component('exemple', require('./components/ExampleComponent.vue'));
 Vue.component('heure', require('./components/HeureComponent.vue'));
 Vue.component('date', require('./components/DateComponent.vue'));
 Vue.component('calendrier', require('./components/CalendrierComponent.vue'));
+Vue.component('meteo', require('./components/MeteoComponent.vue'));
+Vue.component('music', require('./components/MusicComponent.vue'));
 
 const app = new Vue({
     el: '#dashboard'

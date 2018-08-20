@@ -26,4 +26,6 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/', function () {
         return view('dashboard');
     });
+
+    Route::get('/broadcast/spotify', 'MusicController@index');
 });
