@@ -37,7 +37,7 @@ class MusicController extends Controller
 
 
     /**
-    * Spotify get Acces token
+    * Spotify get Access token
     */
     public function getAccessToken() {
       $authCode = "AQDOvytbcZMue737MudeT2lhLfNQvSWnfMRT7_IDDMfTpomsYcArTft5VCimuCD6K9Ihnn5IdkPGYplbz_9UBoaRHNZ13Nkkcr17YcA_GY3VqvrrHydNB4yAWsbA96fjM2wsQ6vcWoWmA5dJk8_QYcRMQe3plYoqmvZFdbjPnL05DfyLY2CoHCUh8GcSPfFP7_wwPt0_9pUxJkW9g5vdxDg8umTg9v53kCPFqdsr0EyOiOUVWnfIOJVNHr8fJyP2Vs9Nxe9wYlUWrUGaaceHFRk3LwXa4BUc5lDvPPsdK7sqJdmQdL0tZ2R6hg";
