@@ -4,11 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Events\SpotifyEvent;
-
+use Illuminate\Http\JsonResponse;
 
 class MusicController extends Controller
 {
-    //
+
+    private $spotify_client_id;
+    private $spotify_client_secret;
+    private $spotify_redirect_uri;
+
+    public function __construct()
+    {
+      $this->spotify_client_id = config("services.spotify.id");
+      $this->spotify_client_secret = config("services.spotify.secret");
+      $this->spotify_redirect_uri = "http://dashboard.test/dashboard/spotify/redirect-uri";
+      $this->spotify_token = config("services.spotify.token");
+    }
+
     public function index(){
 
       //dd(config('broadcasting.connections.pusher'));
@@ -26,12 +38,8 @@ class MusicController extends Controller
      */
     public function authUser() {
 
-      $client_id = config("services.spotify.id"); 
-      $client_secret = config("services.spotify.secret");
       $scope = "user-read-private%20user-read-email%20user-read-currently-playing";
-      $redirect_uri = "http://dashboard.test/dashboard/spotify/redirect-uri";
-      $url = "https://accounts.spotify.com/authorize?response_type=code&client_id={$client_id}&scope={$scope}&redirect_uri={$redirect_uri}";
-
+      $url = "https://accounts.spotify.com/authorize?response_type=code&client_id={$this->spotify_client_id}&scope={$scope}&redirect_uri={$this->spotify_redirect_uri}";
       return redirect($url);
 
     }
@@ -41,26 +49,20 @@ class MusicController extends Controller
     * Spotify get Acces token
     */
     public function getAccessToken() {
-
-      $client_id = config("services.spotify.id"); 
-      $client_secret = config("services.spotify.secret");
-      $authCode = "AQAh4WMC1QsPcnMlo7ykQtmiuUORIbcvUJfh6wNkt0ceiK_0aY84KObSxHQkbqsQqt8ecfURq7fSBEyi4OYk_YiiK4_nIyQEOKY4oUobofAFIjJnBNhXpOnsehfxR8fi6uCHJbJN3Fp-qsDJxl7o7YobnfRX5pbiYao-BgaLtKwiW4FEieQy06Q0M2F-2NyBG4lPzfggVMZRH-7Za_7trMtbD2f9F5pW8C8mOKX2bsUAOr-yh2eDQ4Ur38-SBP_Y8xOLq8dwcEiLnqU_PcWxYYhMscJKC5kPfdH03P40n7fesEQomfTHHYd8Jw";
+      $authCode = "AQDOvytbcZMue737MudeT2lhLfNQvSWnfMRT7_IDDMfTpomsYcArTft5VCimuCD6K9Ihnn5IdkPGYplbz_9UBoaRHNZ13Nkkcr17YcA_GY3VqvrrHydNB4yAWsbA96fjM2wsQ6vcWoWmA5dJk8_QYcRMQe3plYoqmvZFdbjPnL05DfyLY2CoHCUh8GcSPfFP7_wwPt0_9pUxJkW9g5vdxDg8umTg9v53kCPFqdsr0EyOiOUVWnfIOJVNHr8fJyP2Vs9Nxe9wYlUWrUGaaceHFRk3LwXa4BUc5lDvPPsdK7sqJdmQdL0tZ2R6hg";
       $values = array(
         'grant_type' => "authorization_code",
         'code' => $authCode,
-        'redirect_uri' => "http://dashboard.test/dashboard/spotify/redirect-uri",
+        'redirect_uri' => $this->spotify_redirect_uri,
       );
-    
       $params = http_build_query($values);
-
       $ch = curl_init();
-
-
       curl_setopt($ch, CURLOPT_URL,            "https://accounts.spotify.com/api/token" );
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
       curl_setopt($ch, CURLOPT_POST,           1 );
       curl_setopt($ch, CURLOPT_POSTFIELDS, $params); 
-      curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Authorization: Basic '.base64_encode($client_id.':'.$client_secret))); 
+      
+      curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Authorization: Basic '.base64_encode($this->spotify_client_id.':'.$spotify_client_secret))); 
       
       $result=curl_exec($ch);
       return $result;
@@ -73,17 +75,20 @@ class MusicController extends Controller
     */
     public function getCurrentSong() {
 
-      $client_id = config("services.spotify.id");
-      $token = config("services.spotify.token");
-      $authorization = 'Authorization: Bearer '.$token;
+      $authorization = 'Authorization: Bearer '.$this->spotify_token;
       $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, "https://api.spotify.com/v1/me/player/currently-playing" );
-      curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization ));
-  
+
+      curl_setopt_array($ch,  array(
+        CURLOPT_URL => "https://api.spotify.com/v1/me/player/currently-playing",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => array(
+          'Content-Type: application/json, charset = utf-8',
+          $authorization 
+         ))
+      );
       $result = curl_exec($ch);
-      return json_decode($result);
+      $content = json_decode($result, true);
+      return $content;
     }
-
-
-
 }

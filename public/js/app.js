@@ -66215,6 +66215,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -66223,11 +66228,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     props: {},
     data: function data() {
-        return {};
+        return {
+            title: '',
+            album: '',
+            imageUrl: ''
+        };
     },
     created: function created() {
-        // this.refreshTime();
-        // setInterval(this.refreshTime, 10000);
+        this.refreshTime();
+        setInterval(this.refreshTime, 5000);
 
         window.Pusher = __webpack_require__(190);
         window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
@@ -66244,12 +66253,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        // refreshTime() {
-        //   axios
-        //   .get("https://api.spotify.com/v1/me/player/currently-playing?code=AQAGnw4aLo0lMuSwVACSIBmRD21xMiaMGOmcFyA4hOKs6wAyehj5RiVi5_phHCypx86nNJo2-TJGs-v9FR4VvDAYjBzkmGupRby4YUQgHAoPG4rirbjmJjph2WShP8CgONIWYXFBqtyui-uI2A8410heFkCOZAS2FpspGeg-VDkUEeA4CzYIQTqzYouI9h5-Wzx4ZuCBYvA3tkQknGGZWLTjEmgb6QKzM9O5Ya6Rrje7-0raz98T52WaGSzO4YBgs86C6IRqAG4PJGQ6s9M")
-        //   .then(response => (console.log(response)))
-        // },
-
+        refreshTime: function refreshTime() {
+            this.getCurrentSong();
+        },
         login: function login() {
             var scopes = 'user-read-private user-read-email';
             axios.get('https://accounts.spotify.com/authorize?response_type=code&client_id=' + Object({"MIX_PUSHER_APP_KEY":"a53c70f356e3893a6a38","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).SPOTIFY_API_ID + (scopes ? '&scope=' + encodeURIComponent(scopes) : '') + '&redirect_uri=' + encodeURIComponent('http://dashboard.test/dashboard/spotify/redirect-uri'));
@@ -66260,9 +66266,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         getCurrentSong: function getCurrentSong() {
+            var _this = this;
+
             axios.get("/dashboard/spotify/current-song").then(function (response) {
-                return console.log(response);
+                _this.updateSong(response);
             });
+        },
+        updateSong: function updateSong(response) {
+            this.title = response.data.item.name;
+            this.album = response.data.item.album.name;
+            this.imageUrl = response.data.item.album.images[0].url;
         }
     }
 });
@@ -76092,7 +76105,13 @@ var render = function() {
                 }
               },
               [_vm._v("Get current song")]
-            )
+            ),
+            _vm._v(" "),
+            _c("h2", [_vm._v("Song name : " + _vm._s(_vm.title))]),
+            _vm._v(" "),
+            _c("h3", [_vm._v("Album name: " + _vm._s(_vm.album))]),
+            _vm._v(" "),
+            _c("img", { attrs: { src: _vm.imageUrl } })
           ])
         ])
       ])

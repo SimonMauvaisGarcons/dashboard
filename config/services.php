@@ -37,7 +37,7 @@ return [
 
 
     'spotify' => [
-        'token' => "BQAU_bMmrZ4a5TKHNv_4NX86MEvYeMMjfxi-hRRsqrSa0ovO-sVCYUQrCs65XkPj9NsJU9aKN0JkzL8pIFS7RvqNFumdFgL39E76QZp9nAgmKVHhNIs9xq52oxWHcD6YzIfdL88dtN6y7GhRKkQAjAPGJbBr9hDkTA",
+        'token' => "BQBn0ZAQd9hlRoXEYy_gQJ2Dl9XtmUVhXQx6-VqeisPw4ZuwT__hSqTv1ek9rm4Z917QHAed9UdzqJjhG4UuSbKUrI4aZD7v1LfvdWsol2yMKNfcMhrextulbN9ryziDAJbD0YJAFb3Noa-UJFyT-HcZxMijOCk79A",
         'refresh_token' => "AQDl96DldOFAew1YC6aGbv7Wa84iE26qJWC9JJZ0F5_bsYGv5ziof6RGUXh5Xx1B3ggWj0rPTRHalh9yKJ2w9WqeZlydZ3DNWwcIyY1J_C24klmw8rbKwirknpGzfjFona8",
         'id' => env('SPOTIFY_API_ID'),
         'secret' => env('SPOTIFY_API_SECRET'),

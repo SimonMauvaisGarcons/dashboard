@@ -8,6 +8,11 @@
                         <!-- <button type="button" name="button" v-on:click="login()">Log in to spotify</button> -->
                         <button type="button" name="button" v-on:click="getAccesToken()">Get access token</button>
                         <button type="button" name="button" v-on:click="getCurrentSong()">Get current song</button>
+
+
+                        <h2>Song name : {{ title }}</h2>
+                        <h3>Album name: {{ album }}</h3>
+                        <img :src="imageUrl" />
                   </div>
               </div>
           </div>
@@ -26,12 +31,14 @@ export default {
     },
     data() {
         return {
-
+            title: '',
+            album: '',
+            imageUrl: '',
         };
     },
     created() {
-        // this.refreshTime();
-        // setInterval(this.refreshTime, 10000);
+        this.refreshTime();
+        setInterval(this.refreshTime, 5000);
 
         window.Pusher = require('pusher-js');
         window.Echo = new Echo({
@@ -49,11 +56,9 @@ export default {
 
     },
     methods: {
-        // refreshTime() {
-        //   axios
-        //   .get("https://api.spotify.com/v1/me/player/currently-playing?code=AQAGnw4aLo0lMuSwVACSIBmRD21xMiaMGOmcFyA4hOKs6wAyehj5RiVi5_phHCypx86nNJo2-TJGs-v9FR4VvDAYjBzkmGupRby4YUQgHAoPG4rirbjmJjph2WShP8CgONIWYXFBqtyui-uI2A8410heFkCOZAS2FpspGeg-VDkUEeA4CzYIQTqzYouI9h5-Wzx4ZuCBYvA3tkQknGGZWLTjEmgb6QKzM9O5Ya6Rrje7-0raz98T52WaGSzO4YBgs86C6IRqAG4PJGQ6s9M")
-        //   .then(response => (console.log(response)))
-        // },
+        refreshTime() {
+           this.getCurrentSong();
+        },
 
         login(){
             var scopes = 'user-read-private user-read-email';
@@ -70,7 +75,15 @@ export default {
         getCurrentSong() {
           axios
           .get("/dashboard/spotify/current-song")
-          .then(response => (console.log(response)))
+          	.then((response) => {
+                this.updateSong(response)
+            })
+        },
+
+        updateSong(response){
+            this.title = response.data.item.name;
+            this.album = response.data.item.album.name;
+            this.imageUrl = response.data.item.album.images[0].url;
         }
 
      },
