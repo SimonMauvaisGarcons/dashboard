@@ -27,5 +27,27 @@ Route::prefix('dashboard')->group(function () {
         return view('dashboard');
     });
 
-    Route::get('/broadcast/spotify', 'MusicController@index');
+    /*
+    * broadcasting event server side
+    */
+    Route::prefix('broadcast')->group(function () {
+        Route::get('spotify', 'MusicController@index');
+    });
+
+
+    /*
+    * Get access token
+    */
+     Route::get('spotify/get-access-token', 'MusicController@getAccessToken');
+    /*
+    * Get current song
+    */
+    Route::get('spotify/current-song', 'MusicController@getCurrentSong');
+
+    /*
+    * Auth user
+    */
+    Route::get('spotify/auth', 'MusicController@authUser');
+   
+   
 });

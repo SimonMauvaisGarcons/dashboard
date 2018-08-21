@@ -5,7 +5,9 @@
               <div class="card card-default">
                   <div class="card-header">Music component</div>
                   <div class="card-body">
+                        <!-- <button type="button" name="button" v-on:click="login()">Log in to spotify</button> -->
                         <button type="button" name="button" v-on:click="getAccesToken()">Get access token</button>
+                        <button type="button" name="button" v-on:click="getCurrentSong()">Get current song</button>
                   </div>
               </div>
           </div>
@@ -21,7 +23,6 @@ export default {
 
 
     props: {
-      token: "AQAv_72NnELtISdlievuIoOAz22mVsIpNq9uAlTg1UNcKYWB0k17OGxcYOsRZeSDd0MKwHzPKOqhPcFx3NXzM94wcpII7iRRloOwGA93JJBDcZBJZgnDM4ydoLmyJKbST8GdTTnAfxiAgciKsGF-S-r_B-omqrmSwN9YkIeaXP9BrAhh19ED00HqEwPaiqbJjERW6AB0dmnxX5BYQDVL9d-KBoEFx1HYna9-QnChgWsXtQs_E1F8r9Hxc-VCB3rO6OUkK1OuZi8wo2XDuZU",
     },
     data() {
         return {
@@ -54,21 +55,23 @@ export default {
         //   .then(response => (console.log(response)))
         // },
 
-        // getAccesToken() {
-        //   var client_id = "765aa00f1cda4106aa074dfd90472fd8";
-        //   var redirect_uri = "http://dashboard.test/dashboard/spotify/redirect-uri";
-        //   var scopes = 'user-read-private user-read-email';
-        //   const url = 'https://accounts.spotify.com/authorize' +
-        //     '?response_type=code' +
-        //     '&client_id=' + client_id +
-        //     (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
-        //     '&redirect_uri=' + encodeURIComponent(redirect_uri);
-        //
-        //   axios
-        //   .get(url)
-        //   .then(response => (console.log(response)))
-        //
-        // }
+        login(){
+            var scopes = 'user-read-private user-read-email';
+            axios.get('https://accounts.spotify.com/authorize?response_type=code&client_id=' + process.env.SPOTIFY_API_ID + (scopes ? '&scope=' + encodeURIComponent(scopes) : '') + '&redirect_uri=' + encodeURIComponent('http://dashboard.test/dashboard/spotify/redirect-uri'));
+        },
+
+
+        getAccesToken() {        
+          axios
+          .get("/dashboard/spotify/get-access-token")
+          .then(response => (console.log(response)))
+        },
+
+        getCurrentSong() {
+          axios
+          .get("/dashboard/spotify/current-song")
+          .then(response => (console.log(response)))
+        }
 
      },
 }

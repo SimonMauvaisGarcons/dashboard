@@ -33,4 +33,16 @@ class SpotifyEvent implements ShouldBroadcast
     {
         return new Channel('spotify');
     }
+
+
+
+    /**
+    * Get the data to broadcast.
+    *
+    * @return array
+    */
+    public function broadcastWith()
+    {
+        return ['musique' => " Voici le nom de la chanson"];
+    }
 }

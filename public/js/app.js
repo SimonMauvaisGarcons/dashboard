@@ -30395,7 +30395,7 @@ module.exports = __webpack_require__(183);
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(141);
-module.exports = __webpack_require__(190);
+module.exports = __webpack_require__(192);
 
 
 /***/ }),
@@ -30432,9 +30432,8 @@ var app = new Vue({
 
 /***/ }),
 /* 142 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
 
 window._ = __webpack_require__(143);
 window.Popper = __webpack_require__(6).default;
@@ -66153,7 +66152,7 @@ var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(188)
 /* template */
-var __vue_template__ = __webpack_require__(189)
+var __vue_template__ = __webpack_require__(191)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -66197,8 +66196,10 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_echo__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_echo__ = __webpack_require__(189);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_laravel_echo__);
+//
+//
 //
 //
 //
@@ -66220,9 +66221,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: {
-        token: "AQAv_72NnELtISdlievuIoOAz22mVsIpNq9uAlTg1UNcKYWB0k17OGxcYOsRZeSDd0MKwHzPKOqhPcFx3NXzM94wcpII7iRRloOwGA93JJBDcZBJZgnDM4ydoLmyJKbST8GdTTnAfxiAgciKsGF-S-r_B-omqrmSwN9YkIeaXP9BrAhh19ED00HqEwPaiqbJjERW6AB0dmnxX5BYQDVL9d-KBoEFx1HYna9-QnChgWsXtQs_E1F8r9Hxc-VCB3rO6OUkK1OuZi8wo2XDuZU"
-    },
+    props: {},
     data: function data() {
         return {};
     },
@@ -66230,7 +66229,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // this.refreshTime();
         // setInterval(this.refreshTime, 10000);
 
-        window.Pusher = __webpack_require__(196);
+        window.Pusher = __webpack_require__(190);
         window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
             broadcaster: 'pusher',
             key: "a53c70f356e3893a6a38",
@@ -66251,82 +66250,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //   .then(response => (console.log(response)))
         // },
 
-        // getAccesToken() {
-        //   var client_id = "765aa00f1cda4106aa074dfd90472fd8";
-        //   var redirect_uri = "http://dashboard.test/dashboard/spotify/redirect-uri";
-        //   var scopes = 'user-read-private user-read-email';
-        //   const url = 'https://accounts.spotify.com/authorize' +
-        //     '?response_type=code' +
-        //     '&client_id=' + client_id +
-        //     (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
-        //     '&redirect_uri=' + encodeURIComponent(redirect_uri);
-        //
-        //   axios
-        //   .get(url)
-        //   .then(response => (console.log(response)))
-        //
-        // }
-
+        login: function login() {
+            var scopes = 'user-read-private user-read-email';
+            axios.get('https://accounts.spotify.com/authorize?response_type=code&client_id=' + Object({"MIX_PUSHER_APP_KEY":"a53c70f356e3893a6a38","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).SPOTIFY_API_ID + (scopes ? '&scope=' + encodeURIComponent(scopes) : '') + '&redirect_uri=' + encodeURIComponent('http://dashboard.test/dashboard/spotify/redirect-uri'));
+        },
+        getAccesToken: function getAccesToken() {
+            axios.get("/dashboard/spotify/get-access-token").then(function (response) {
+                return console.log(response);
+            });
+        },
+        getCurrentSong: function getCurrentSong() {
+            axios.get("/dashboard/spotify/current-song").then(function (response) {
+                return console.log(response);
+            });
+        }
     }
 });
 
 /***/ }),
 /* 189 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "music-component" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8" }, [
-        _c("div", { staticClass: "card card-default" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Music component")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c(
-              "button",
-              {
-                attrs: { type: "button", name: "button" },
-                on: {
-                  click: function($event) {
-                    _vm.getAccesToken()
-                  }
-                }
-              },
-              [_vm._v("Get access token")]
-            )
-          ])
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-3ff6424f", module.exports)
-  }
-}
-
-/***/ }),
-/* 190 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */
 /***/ (function(module, exports) {
 
 var asyncGenerator = function () {
@@ -67264,7 +67206,7 @@ var Echo = function () {
 module.exports = Echo;
 
 /***/ }),
-/* 196 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -76108,6 +76050,70 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
+
+/***/ }),
+/* 191 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "music-component" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "card card-default" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _vm._v("Music component")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c(
+              "button",
+              {
+                attrs: { type: "button", name: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.getAccesToken()
+                  }
+                }
+              },
+              [_vm._v("Get access token")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                attrs: { type: "button", name: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.getCurrentSong()
+                  }
+                }
+              },
+              [_vm._v("Get current song")]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3ff6424f", module.exports)
+  }
+}
+
+/***/ }),
+/* 192 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
