@@ -10,7 +10,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class SpotifyEvent implements ShouldBroadcast
+class SpotifyEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

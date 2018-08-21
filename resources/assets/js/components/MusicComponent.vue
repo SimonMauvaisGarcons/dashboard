@@ -8,8 +8,6 @@
                         <!-- <button type="button" name="button" v-on:click="login()">Log in to spotify</button> -->
                         <button type="button" name="button" v-on:click="getAccesToken()">Get access token</button>
                         <button type="button" name="button" v-on:click="getCurrentSong()">Get current song</button>
-
-
                         <h2>Song name : {{ title }}</h2>
                         <h3>Album name: {{ album }}</h3>
                         <img :src="imageUrl" />
@@ -39,33 +37,13 @@ export default {
     created() {
         this.refreshTime();
         setInterval(this.refreshTime, 5000);
-
-        window.Pusher = require('pusher-js');
-        window.Echo = new Echo({
-            broadcaster: 'pusher',
-            key: process.env.MIX_PUSHER_APP_KEY,
-            cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-            encrypted: true
-        });
-
-        window.Echo.channel('spotify')
-        .listen('SpotifyEvent', (e) => {
-            console.log("wassup");
-            console.log(e);
-        });
-
     },
     methods: {
         refreshTime() {
            this.getCurrentSong();
         },
 
-        login(){
-            var scopes = 'user-read-private user-read-email';
-            axios.get('https://accounts.spotify.com/authorize?response_type=code&client_id=' + process.env.SPOTIFY_API_ID + (scopes ? '&scope=' + encodeURIComponent(scopes) : '') + '&redirect_uri=' + encodeURIComponent('http://dashboard.test/dashboard/spotify/redirect-uri'));
-        },
-
-
+        
         getAccesToken() {        
           axios
           .get("/dashboard/spotify/get-access-token")

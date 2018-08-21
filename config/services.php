@@ -37,10 +37,14 @@ return [
 
 
     'spotify' => [
-        'token' => "BQBn0ZAQd9hlRoXEYy_gQJ2Dl9XtmUVhXQx6-VqeisPw4ZuwT__hSqTv1ek9rm4Z917QHAed9UdzqJjhG4UuSbKUrI4aZD7v1LfvdWsol2yMKNfcMhrextulbN9ryziDAJbD0YJAFb3Noa-UJFyT-HcZxMijOCk79A",
+        'token' => "BQAJ14jlzqCj4tT5BR434SkjpYpOl62PUoyueFhK3wyea-6M3WhSoYSJJaVAcT2yusq6f8Qs8rc-cLIoieL9TnllvDJKiNXzRdX_BJIk6aDypHC_xMxRHh0J7MWNO7xPJBqmJChLAGOpNRc6GrxfiUWyN0XcaSkzGA",
         'refresh_token' => "AQDl96DldOFAew1YC6aGbv7Wa84iE26qJWC9JJZ0F5_bsYGv5ziof6RGUXh5Xx1B3ggWj0rPTRHalh9yKJ2w9WqeZlydZ3DNWwcIyY1J_C24klmw8rbKwirknpGzfjFona8",
         'id' => env('SPOTIFY_API_ID'),
         'secret' => env('SPOTIFY_API_SECRET'),
+    ],
+
+    'testconfig' => [
+        "token" => "",
     ],
 
 ];

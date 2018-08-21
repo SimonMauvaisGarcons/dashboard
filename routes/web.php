@@ -28,13 +28,10 @@ Route::prefix('dashboard')->group(function () {
     });
 
     /*
-    * broadcasting event server side
-    */
-    Route::prefix('broadcast')->group(function () {
-        Route::get('spotify', 'MusicController@index');
-    });
 
 
+
+    
     /*
     * Get access token
     */
