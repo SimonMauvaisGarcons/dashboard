@@ -10477,3 +10477,21 @@ a.text-dark:focus {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
+.calendrier-component .calendrier-tableau ul {
+  padding: 20px;
+  margin: 0;
+  list-style-type: none;
+}
+
+.calendrier-component .calendrier-tableau ul li {
+  float: left;
+  width: calc(100% / 7);
+  padding: 10px;
+  text-align: center;
+}
+
+.calendrier-component .calendrier-tableau ul li.courrant {
+  background-color: blueviolet;
+  color: white;
+}
+

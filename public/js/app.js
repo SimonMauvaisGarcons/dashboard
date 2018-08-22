@@ -65025,6 +65025,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -65045,12 +65053,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       annee: '',
       moi: '',
       premier_jour: '',
-      dernier_jour: ''
+      dernier_jour: '',
+      days_to_add: ''
     };
   },
   created: function created() {
     this.refreshTime();
-    setInterval(this.refreshTime, 1000);
+    setInterval(this.refreshTime, 60000);
   },
 
   methods: {
@@ -65061,6 +65070,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.nombre_jour = __WEBPACK_IMPORTED_MODULE_0_moment___default()("" + this.annee + "-" + this.moi + "", "YYYY-MM").daysInMonth(this.moi);
       this.premier_jour = new Date(this.annee, this.moi, 1);
       this.dernier_jour = new Date(this.annee, this.moi + 1, 0);
+      this.days_to_add = this.premier_jour.getDay() - 1;
     },
 
 
@@ -65090,22 +65100,37 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "calendrier-component" }, [
-    _c("div", { staticClass: "calendrier-tableau" }, [
-      _c(
-        "ul",
-        _vm._l(_vm.jours, function(jour, index) {
-          return _c("li", [_vm._v(_vm._s(jour))])
-        })
-      ),
-      _vm._v(" "),
-      _c(
-        "ul",
-        _vm._l(_vm.nombre_jour, function(jour, index) {
-          return _c("li", { class: _vm.isCurrentDay(index) }, [
-            _vm._v(_vm._s(jour))
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "card card-default" }, [
+          _c("div", { staticClass: "calendrier-tableau" }, [
+            _c(
+              "ul",
+              _vm._l(_vm.jours, function(semaine) {
+                return _c("li", { key: semaine }, [_vm._v(_vm._s(semaine))])
+              })
+            ),
+            _vm._v(" "),
+            _c(
+              "ul",
+              [
+                _vm._l(_vm.days_to_add, function(jour) {
+                  return _c("li", { key: jour + "-added" }, [_vm._v(" - ")])
+                }),
+                _vm._v(" "),
+                _vm._l(_vm.nombre_jour, function(jour, index) {
+                  return _c(
+                    "li",
+                    { key: jour, class: _vm.isCurrentDay(index) },
+                    [_vm._v(_vm._s(jour))]
+                  )
+                })
+              ],
+              2
+            )
           ])
-        })
-      )
+        ])
+      ])
     ])
   ])
 }

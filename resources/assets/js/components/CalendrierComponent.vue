@@ -1,15 +1,23 @@
 <template>
   <div class="calendrier-component">
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+              <div class="card card-default">
+                <div class="calendrier-tableau">
+                    <ul>
+                      <li v-for="semaine in jours"  v-bind:key="semaine">{{ semaine }}</li>
+                    </ul>
+                    <ul>
+                          <!-- <li :key="it.id + '-label'">{{it.label}}</li>
+                          <li :key="it.id + '-separator'" class="separator">&gt;</li> -->
 
-    <div class="calendrier-tableau">
-        <ul>
-          <li v-for="(jour, index) in jours">{{ jour }}</li>
-        </ul>
-        <ul>
-          <li v-for="(jour, index) in nombre_jour" v-bind:class="isCurrentDay(index)">{{ jour }}</li>
-        </ul>
-    </div>
-
+                      <li v-for="jour in days_to_add" :key="jour+ '-added'"> - </li>
+                      <li v-for="(jour, index) in nombre_jour" :key="jour" v-bind:class="isCurrentDay(index)">{{ jour }}</li>
+                    </ul>
+                </div>
+              </div>
+          </div>
+      </div>
   </div>
 </template>
 
@@ -34,11 +42,12 @@ export default {
           moi: '',
           premier_jour: '',
           dernier_jour: '',
+          days_to_add: '',
         };
     },
     created() {
         this.refreshTime();
-        setInterval(this.refreshTime, 1000);
+        setInterval(this.refreshTime, 60000);
     },
     methods: {
 
@@ -49,6 +58,7 @@ export default {
            this.nombre_jour = moment(""+this.annee+"-"+this.moi+"", "YYYY-MM").daysInMonth(this.moi);
            this.premier_jour = new Date(this.annee, this.moi , 1);
            this.dernier_jour = new Date(this.annee, this.moi + 1, 0);
+           this.days_to_add = this.premier_jour.getDay() - 1;
         },
 
         /*

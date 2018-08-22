@@ -47,7 +47,10 @@ class SpotifyInfos extends Command
         $this->info('---------------------------------');
         $this->info('');
         $this->comment('Current song');
-        $this->line($data['song']['name'] . " by " . $data['artiste']['name']);
+        $this->line($data['song']['name']);
+        $this->info('');
+        $this->comment('Artiste');
+        $this->line($data['artiste']['name']);
         $this->info('');
         $this->comment('Album');
         $this->line($data['album']['name']);
