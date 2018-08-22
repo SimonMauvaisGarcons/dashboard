@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\Spotify\Spotify;
 use Config;
 
 class MusicController extends Controller
@@ -109,6 +110,9 @@ class MusicController extends Controller
       if(isset($content["error"])){
         return $this->refreshToken($request);
       }else{
+
+        Spotify::storeInJson($content);
+      
         return $content;
       }
     }

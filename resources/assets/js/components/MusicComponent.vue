@@ -22,15 +22,15 @@
 
 <script>
 
-import Echo from "laravel-echo";
+
+import spotify from '../services/spotify/Spotify';
 
 export default {
-
-
     props: {
     },
     data() {
         return {
+            id_song: '',
             title: '',
             album: '',
             imageUrl: '',
@@ -58,11 +58,14 @@ export default {
                 this.album = "Il y a une pub Spotify";
                 this.imageUrl = "";
             }else{
-            this.is_playing = response.data.is_playing;
-            this.title = response.data.item.name;
-            this.album = response.data.item.album.name;
-            this.imageUrl = response.data.item.album.images[1].url;
+
+                this.is_playing = response.data.is_playing;
+                this.title = response.data.item.name;
+                this.album = response.data.item.album.name;
+                this.imageUrl = response.data.item.album.images[1].url;
+                this.id_song = response.data.item.id;
             }
+
         }
      },
 }

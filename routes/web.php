@@ -30,16 +30,6 @@ Route::prefix('dashboard')->group(function () {
     /*
 
 
-
-
-
-
-
-    /*
-    * Get access token
-    */
-    Route::get('spotify/get-access-token', 'MusicController@getAccessToken');
-
     /*
     * Get current song
     */
