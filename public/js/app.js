@@ -30425,7 +30425,7 @@ Vue.component('date', __webpack_require__(175));
 Vue.component('calendrier', __webpack_require__(178));
 Vue.component('meteo', __webpack_require__(181));
 Vue.component('music', __webpack_require__(187));
-
+Vue.component('twitch', __webpack_require__(198));
 var app = new Vue({
   el: '#dashboard'
 });
@@ -66382,6 +66382,184 @@ var Spotify = function () {
 }();
 
 /* unused harmony default export */ var _unused_webpack_default_export = (new Spotify());
+
+/***/ }),
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(199)
+/* template */
+var __vue_template__ = __webpack_require__(200)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/TwitchComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-9348defa", Component.options)
+  } else {
+    hotAPI.reload("data-v-9348defa", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 199 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {},
+    data: function data() {
+        return {
+            viewers: '',
+            is_live: '',
+            game: '',
+            preview: '',
+            user: '',
+            user_logo: '',
+            stream_title: '',
+            stream: ''
+
+        };
+    },
+    created: function created() {
+        this.refreshTime();
+        setInterval(this.refreshTime, 60000);
+    },
+
+    methods: {
+        refreshTime: function refreshTime() {
+            var _this = this;
+
+            axios.get("/dashboard/twitch").then(function (response) {
+                console.log(response);
+                _this.updateStream(response);
+            });
+        },
+        updateStream: function updateStream(response) {
+            if (response != null) {
+                this.viewers = response.data.stream.viewers;
+                this.is_live = true;
+                this.game = response.data.stream.game;
+                this.preview = response.data.stream.preview.medium;
+                this.user = response.data.stream.channel.name;
+                this.user_logo = response.data.stream.channel.logo;
+                this.stream_title = response.data.stream.channel.status;
+            } else {
+                this.is_live = false;
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "heure-component" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "card card-default" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _vm._v("Twitch component")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-body" },
+            [
+              _vm.is_live
+                ? [
+                    _c("h2", [_vm._v("Title: " + _vm._s(_vm.stream_title))]),
+                    _vm._v(" "),
+                    _c("h3", [_vm._v("User: " + _vm._s(_vm.user))]),
+                    _vm._v(" "),
+                    _c("h4", [_vm._v("Viewers: " + _vm._s(_vm.viewers))]),
+                    _vm._v(" "),
+                    _c("h4", [_vm._v("Game: " + _vm._s(_vm.game))]),
+                    _vm._v("\n                        Logo : "),
+                    _c("img", { attrs: { src: _vm.user_logo } }),
+                    _vm._v("\n                        Preview : "),
+                    _c("img", { attrs: { src: _vm.preview } })
+                  ]
+                : [_c("h2", [_vm._v("Présentement hors ligne")])]
+            ],
+            2
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-9348defa", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

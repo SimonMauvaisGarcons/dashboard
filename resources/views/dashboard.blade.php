@@ -3,10 +3,12 @@
 @section('content')
 <div class="dashboard-container">
   <!-- <meteo></meteo> -->
+  
   <music></music>
   <heure></heure>
   <date></date>
   <calendrier></calendrier>
+  <twitch></twitch>
   
 </div>
 @endsection

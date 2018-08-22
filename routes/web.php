@@ -30,6 +30,13 @@ Route::prefix('dashboard')->group(function () {
     /*
 
 
+
+
+
+    /*
+    * Twitch
+    */
+    Route::get('twitch', 'TwitchController@index');
     /*
     * Get current song
     */

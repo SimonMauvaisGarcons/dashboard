@@ -6,14 +6,14 @@ use Illuminate\Console\Command;
 
 use App\Services\Spotify\Spotify;
 
-class SpotifyInfos extends Command
+class SpotifyCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'Spotify info';
+    protected $signature = 'Spotify';
 
     /**
      * The console command description.
