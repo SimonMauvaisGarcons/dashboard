@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Services\Twitch\Twitch;
-
+use App\Console\Commands\Log;
 
 class TwitchCommand extends Command
 {
@@ -46,9 +46,7 @@ class TwitchCommand extends Command
         $this->info('Redirect to stream url');
         $this->info('---------------------------------');
         
-        
-
-
+        \Log::info("Un stream a été ouvert depuit le terminale");
 
     }
 }

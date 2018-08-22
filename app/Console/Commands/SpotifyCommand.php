@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
+use App\Console\Commands\Log;
 use App\Services\Spotify\Spotify;
 
 class SpotifyCommand extends Command
@@ -54,5 +54,7 @@ class SpotifyCommand extends Command
         $this->info('');
         $this->comment('Album');
         $this->line($data['album']['name']);
+
+        \Log::info("Terminale: " . $data['song']['name'] . " / " . $data['artiste']['name'] . " / " . $data['album']['name']);
     }
 }
