@@ -66218,6 +66218,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -66229,7 +66231,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             title: '',
             album: '',
-            imageUrl: ''
+            imageUrl: '',
+            is_playing: false
         };
     },
     created: function created() {
@@ -66241,11 +66244,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         refreshTime: function refreshTime() {
             this.getCurrentSong();
         },
-        getAccesToken: function getAccesToken() {
-            axios.get("/dashboard/spotify/get-access-token").then(function (response) {
-                return console.log(response);
-            });
-        },
         getCurrentSong: function getCurrentSong() {
             var _this = this;
 
@@ -66254,9 +66252,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         updateSong: function updateSong(response) {
-            this.title = response.data.item.name;
-            this.album = response.data.item.album.name;
-            this.imageUrl = response.data.item.album.images[0].url;
+            if (response.data.item === null) {
+                this.title = "Je suis pauvre";
+                this.album = "Il y a une pub Spotify";
+                this.imageUrl = "";
+            } else {
+                this.is_playing = response.data.is_playing;
+                this.title = response.data.item.name;
+                this.album = response.data.item.album.name;
+                this.imageUrl = response.data.item.album.images[1].url;
+            }
         }
     }
 });
@@ -67217,37 +67222,26 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
-            _c(
-              "button",
-              {
-                attrs: { type: "button", name: "button" },
-                on: {
-                  click: function($event) {
-                    _vm.getAccesToken()
-                  }
-                }
-              },
-              [_vm._v("Get access token")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                attrs: { type: "button", name: "button" },
-                on: {
-                  click: function($event) {
-                    _vm.getCurrentSong()
-                  }
-                }
-              },
-              [_vm._v("Get current song")]
-            ),
-            _vm._v(" "),
             _c("h2", [_vm._v("Song name : " + _vm._s(_vm.title))]),
             _vm._v(" "),
             _c("h3", [_vm._v("Album name: " + _vm._s(_vm.album))]),
             _vm._v(" "),
-            _c("img", { attrs: { src: _vm.imageUrl } })
+            _c("img", { attrs: { src: _vm.imageUrl } }),
+            _vm._v(" "),
+            _c(
+              "p",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.is_playing,
+                    expression: "is_playing"
+                  }
+                ]
+              },
+              [_vm._v("Currently playing")]
+            )
           ])
         ])
       ])
