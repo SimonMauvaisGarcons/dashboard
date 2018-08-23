@@ -47,7 +47,7 @@ export default {
         },
         getCurrentSong() {
           axios
-          .get("/dashboard/spotify/current-song")
+          .get("/spotify/current-song")
           	.then((response) => {
                 this.updateSong(response)
             })

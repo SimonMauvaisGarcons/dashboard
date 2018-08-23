@@ -22,6 +22,8 @@ Vue.component('calendrier', require('./components/CalendrierComponent.vue'));
 Vue.component('meteo', require('./components/MeteoComponent.vue'));
 Vue.component('music', require('./components/MusicComponent.vue'));
 Vue.component('twitch', require('./components/TwitchComponent.vue'));
+
+Vue.component('spotify', require('./components/profile/spotify/SpotifyComponent.vue'));
 const app = new Vue({
     el: '#dashboard'
 });

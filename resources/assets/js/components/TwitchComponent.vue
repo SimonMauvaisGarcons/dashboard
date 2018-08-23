@@ -57,7 +57,7 @@
                 })
              },
              updateStream(response) {
-                 if(response != null){
+                 if(response.stream != null){
                     this.viewers = response.data.stream.viewers;
                     this.is_live = true;
                     this.game = response.data.stream.game;

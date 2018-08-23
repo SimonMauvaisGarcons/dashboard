@@ -30426,6 +30426,8 @@ Vue.component('calendrier', __webpack_require__(178));
 Vue.component('meteo', __webpack_require__(181));
 Vue.component('music', __webpack_require__(187));
 Vue.component('twitch', __webpack_require__(198));
+
+Vue.component('spotify', __webpack_require__(201));
 var app = new Vue({
   el: '#dashboard'
 });
@@ -66271,7 +66273,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getCurrentSong: function getCurrentSong() {
             var _this = this;
 
-            axios.get("/dashboard/spotify/current-song").then(function (response) {
+            axios.get("/spotify/current-song").then(function (response) {
                 _this.updateSong(response);
             });
         },
@@ -66493,7 +66495,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         updateStream: function updateStream(response) {
-            if (response != null) {
+            if (response.stream != null) {
                 this.viewers = response.data.stream.viewers;
                 this.is_live = true;
                 this.game = response.data.stream.game;
@@ -66558,6 +66560,306 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-9348defa", module.exports)
+  }
+}
+
+/***/ }),
+/* 201 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(202)
+/* template */
+var __vue_template__ = __webpack_require__(203)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/profile/spotify/SpotifyComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4f017616", Component.options)
+  } else {
+    hotAPI.reload("data-v-4f017616", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 202 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Notification__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Notification___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Notification__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        credentials: {}
+    },
+    components: {
+        notification: __WEBPACK_IMPORTED_MODULE_1__Notification___default.a
+    },
+    data: function data() {
+        return {
+            current_token: this.credentials.token,
+            show_notification: false
+
+        };
+    },
+    created: function created() {
+        //console.log(this.notification.valide);
+    },
+
+    methods: {
+        refreshToken: function refreshToken() {
+            var _this = this;
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get("/spotify/refresh").then(function (response) {
+                _this.updateToken(response);
+            });
+        },
+        updateToken: function updateToken(response) {
+            this.current_token = response.data;
+            this.show_notification = true;
+            var self = this;
+            setTimeout(function () {
+                self.show_notification = false;
+            }, 2000);
+        }
+    }
+});
+
+/***/ }),
+/* 203 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "profile-spotify-credentials" },
+    [
+      _vm.show_notification ? _c("notification") : _vm._e(),
+      _vm._v(" "),
+      _vm.credentials.has_credential
+        ? _c("div", [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-link",
+                on: {
+                  click: function($event) {
+                    _vm.refreshToken()
+                  }
+                }
+              },
+              [_vm._v("Réinitialiser vos clés d'identifications")]
+            ),
+            _vm._v(" "),
+            _c("br"),
+            _c("br"),
+            _vm._v(" "),
+            _c("div", { staticClass: "container" }, [
+              _c("h4", [_vm._v("Voici vos clés d'identifications")]),
+              _vm._v(" "),
+              _c("h5", [_vm._v("Access token")]),
+              _vm._v(" "),
+              _c("p", { staticClass: "small text-muted" }, [
+                _vm._v(_vm._s(_vm.current_token))
+              ]),
+              _vm._v(" "),
+              _c("h5", [_vm._v("Refresh token")]),
+              _vm._v(" "),
+              _c("p", { staticClass: "small text-muted" }, [
+                _vm._v(_vm._s(_vm.credentials.refresh_token))
+              ])
+            ])
+          ])
+        : _c("div", [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-link",
+                attrs: { href: "/spotify/auth/go" }
+              },
+              [_vm._v("Connecter votre compte Spotify")]
+            )
+          ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4f017616", module.exports)
+  }
+}
+
+/***/ }),
+/* 204 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(205)
+/* template */
+var __vue_template__ = __webpack_require__(206)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/profile/Notification.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-20235dc8", Component.options)
+  } else {
+    hotAPI.reload("data-v-20235dc8", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 205 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        message: {}
+    },
+    data: function data() {
+        return {
+            valide: 'false'
+        };
+    },
+    created: function created() {},
+
+    methods: {}
+});
+
+/***/ }),
+/* 206 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "profile-notification container" }, [
+      _c("p", { staticClass: "alert alert-success" }, [
+        _vm._v("Vos clés ont bien été réinitialiser")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-20235dc8", module.exports)
   }
 }
 

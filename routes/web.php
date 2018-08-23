@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,42 +14,45 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
+
+
 /*
 * Dashboard routes
 */
 Route::prefix('dashboard')->group(function () {
-
-    /*
-    * Dashboard landing page
-    */
-    Route::get('/', function () {
-        return view('dashboard');
-    });
-
-    /*
-
-
-
-
-
     /*
     * Twitch
     */
     Route::get('twitch', 'TwitchController@index');
+
+
+
+
+});
+
+
+/**
+ * User profile route
+ */
+Auth::routes();
+Route::group(['middleware' => ['auth']], function () {
+
+    Route::get('/profile', 'HomeController@index')->name('profile');
+
     /*
-    * Get current song
+    * Dashboard
+    */
+    Route::get('/dashboard', function () { return view('dashboard'); });
+
+    /*
+    * Spotify route
     */
     Route::get('spotify/current-song', 'MusicController@getCurrentSong');
-
-    /*
-    * Auth user to spotify
-    */
     Route::get('spotify/auth', 'MusicController@index');
-
-
-
     Route::get('spotify/auth/go', ['as' => 'spotify.auth.go', 'uses' => "MusicController@authUser"] );
-    
-   
-   
+    Route::get('spotify/refresh', 'MusicController@refreshToken');
 });
+
+

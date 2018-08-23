@@ -2,6 +2,9 @@
 
 namespace App\Services\Spotify;
 use Illuminate\Http\Request;
+use App\SpotifyModel;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Spotify
 {
@@ -36,5 +39,50 @@ class Spotify
         file_put_contents(base_path('resources/spotify.json'), stripslashes($newJsonString));
         return 'Data save';
     }
+
+    /**
+     * Save spotify credentials to database
+     */
+    public static function saveCredentials($token, $refresh_token) {
+
+        return SpotifyModel::create([
+            'user_id' => Auth::id(),
+            'token' => $token,
+            'refresh_token' => $refresh_token,
+        ]);
+
+    }
+
+    /**
+     * Save spotify credentials to database
+     */
+    public static function updateCredentials($token) {
+
+
+        DB::table('spotify')->where('user_id', Auth::id())->update(['token' => $token]);
+        return "Token update";
+
+    }
+    /**
+     * Get spotify info by user connect
+    */
+    public static function getCredentials(): array {
+
+
+        $query = DB::table('spotify')->select('token', 'refresh_token')->where('user_id', Auth::id())->get()->toArray();
+        if(!empty($query)){
+            $has_credentials = "true";
+        }else{
+            $has_credentials = "false";
+        }
+
+        $data = [
+            "has_credential" => $has_credentials,
+            "token" => $query[0]->token,
+            "refresh_token" =>$query[0]->refresh_token
+        ];
+        return $data;
+    }   
+
 
 }
