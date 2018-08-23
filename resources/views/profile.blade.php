@@ -28,6 +28,14 @@
                     <spotify v-bind:credentials="{{ json_encode($spotify) }}"></spotify>
                 </div>
             </div>
+
+            <br>
+            <div class="card">
+                <div class="card-header">Twitch setting</div>
+                <div class="card-body">
+                    <twitchsetting></twitchsetting>
+                </div>
+            </div>
         </div>
     </div>
 </div>

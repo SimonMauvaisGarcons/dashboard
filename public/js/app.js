@@ -30428,6 +30428,7 @@ Vue.component('music', __webpack_require__(187));
 Vue.component('twitch', __webpack_require__(198));
 
 Vue.component('spotify', __webpack_require__(201));
+Vue.component('twitchsetting', __webpack_require__(207));
 var app = new Vue({
   el: '#dashboard'
 });
@@ -66860,6 +66861,184 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-20235dc8", module.exports)
+  }
+}
+
+/***/ }),
+/* 207 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(208)
+/* template */
+var __vue_template__ = __webpack_require__(209)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/profile/twitch/TwitchComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-04f8850b", Component.options)
+  } else {
+    hotAPI.reload("data-v-04f8850b", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 208 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Notification__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Notification___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Notification__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {},
+    components: {
+        notification: __WEBPACK_IMPORTED_MODULE_1__Notification___default.a
+    },
+    data: function data() {
+        return {
+            show_notification: false,
+            edit_twitch_id: false
+        };
+    },
+    created: function created() {},
+
+    methods: {
+        updateTwitchId: function updateTwitchId() {
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get("twitch/update").then(function (response) {
+                //this.updateToken(response);
+
+            });
+
+            console.log("je veux update le twitch id");
+            this.edit_twitch_id = false;
+
+            this.show_notification = true;
+            var self = this;
+            setTimeout(function () {
+                self.show_notification = false;
+            }, 2000);
+        }
+    }
+});
+
+/***/ }),
+/* 209 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "profile-spotify-credentials" },
+    [
+      _vm.show_notification ? _c("notification") : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "container" }, [
+        _c("h5", [_vm._v(" Identifiant twitch")]),
+        _vm._v(" "),
+        _vm.edit_twitch_id
+          ? _c("div", [
+              _c("input", { attrs: { type: "text", value: "Ninja" } }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-link",
+                  on: {
+                    click: function($event) {
+                      _vm.updateTwitchId()
+                    }
+                  }
+                },
+                [_vm._v("Save")]
+              )
+            ])
+          : _c("div", [
+              _c("span", [_vm._v("Ninja")]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-link",
+                  on: {
+                    click: function($event) {
+                      _vm.edit_twitch_id = true
+                    }
+                  }
+                },
+                [_vm._v("edit")]
+              )
+            ])
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-04f8850b", module.exports)
   }
 }
 

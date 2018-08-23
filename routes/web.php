@@ -53,6 +53,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('spotify/auth', 'MusicController@index');
     Route::get('spotify/auth/go', ['as' => 'spotify.auth.go', 'uses' => "MusicController@authUser"] );
     Route::get('spotify/refresh', 'MusicController@refreshToken');
+
+    /**
+     * Upadte twitch user
+     */
+    Route::get('twitch/update', 'TwitchController@updateUser');
 });
 
 

@@ -24,10 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-        
         $spotify = Spotify::getCredentials();
-
         return view('profile', ['spotify' => $spotify]);
     }
 }

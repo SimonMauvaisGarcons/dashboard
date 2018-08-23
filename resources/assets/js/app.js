@@ -24,6 +24,7 @@ Vue.component('music', require('./components/MusicComponent.vue'));
 Vue.component('twitch', require('./components/TwitchComponent.vue'));
 
 Vue.component('spotify', require('./components/profile/spotify/SpotifyComponent.vue'));
+Vue.component('twitchsetting', require('./components/profile/twitch/TwitchComponent.vue'));
 const app = new Vue({
     el: '#dashboard'
 });

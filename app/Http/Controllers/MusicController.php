@@ -14,7 +14,7 @@ class MusicController extends Controller
     private $spotify_redirect_uri;
     private $spotify_token;
     private $spotify_refresh_token;
-    
+
     public function __construct()
     {
 
@@ -108,8 +108,6 @@ class MusicController extends Controller
     */
     public function getCurrentSong(Request $request) {
 
-      // \Config::set('services.testconfig.token', 'America/Chicago');
-
       if($request->session()->has('spotify_token')){
         $token = $request->session()->get('spotify_token');
       }else{
@@ -145,17 +143,24 @@ class MusicController extends Controller
       }
     }
 
-
     /**
     * Spotify refresh token
     */
     public function refreshToken(Request $request){
 
+      if($request->session()->has('spotify_refresh_token')){
+        $refresh_token = $request->session()->get('spotify_refresh_token');
+      }else{
+        $spotify = Spotify::getCredentials();
+        $refresh_token = $spotify["refresh_token"];
+      }
+
       $values = array(
         'grant_type' => "refresh_token",
-        'refresh_token' => $request->session()->get('spotify_refresh_token'),
+        'refresh_token' => $refresh_token,
         'redirect_uri' => $this->spotify_redirect_uri,
       );
+
       $params = http_build_query($values);
       $ch = curl_init();
       curl_setopt($ch, CURLOPT_URL,            "https://accounts.spotify.com/api/token" );
@@ -165,10 +170,11 @@ class MusicController extends Controller
       
       curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Authorization: Basic '.base64_encode($this->spotify_client_id.':'.$this->spotify_client_secret))); 
       $result = curl_exec($ch);
+
       $content = json_decode($result, true);
 
       $request->session()->put('spotify_token', $content['access_token']);
-      
+
       Spotify::updateCredentials($content['access_token']);
       
       return $content["access_token"];
