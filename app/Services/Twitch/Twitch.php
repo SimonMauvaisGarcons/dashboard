@@ -33,7 +33,7 @@ class Twitch
          * Appel à la base de donnée 
          * @return array 
         */
-        $query = DB::table('twitch')->select("player_username")->where('user_id', Auth::id())->get()->toArray();
+        $query = DB::table('twitch')->select("player_username", "identifiant" )->where('user_id', Auth::id())->get()->toArray();
 
         
         /*
@@ -43,7 +43,9 @@ class Twitch
         if(!empty($query)){
 
             $has_twitch_id = true;
-            $id = $query[0]->player_username;
+            $id = $query[0]->identifiant;
+            $username = $query[0]->player_username;
+
         }else{
             $has_twitch_id= false;
             $id = null;
@@ -55,7 +57,8 @@ class Twitch
          */
         $data = (object)  [
             "has_twitch_id" => $has_twitch_id,
-            "id" => $id,
+            "identifiant" => $id,
+            "username" => $username,
         ];
 
         

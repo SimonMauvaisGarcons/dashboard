@@ -40,9 +40,10 @@ class TwitchController extends Controller
         $twitch_id = "9gro76wo69bdqkewo808ki8xabarsf";
 
         $ch = curl_init();
-
+        
+        
         curl_setopt_array($ch,  array(
-          CURLOPT_URL => "https://api.twitch.tv/helix/users?login=ninja",
+          CURLOPT_URL => "https://api.twitch.tv/helix/users?login=".$request->input('username') ,
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_CUSTOMREQUEST => "GET",
           CURLOPT_HTTPHEADER => array(

@@ -1,6 +1,6 @@
 <template>
   <div class="profile-notification container">
-      <p class="alert alert-success">Vos clés ont bien été réinitialiser</p>
+      <p class="alert" :class="informations.type">{{ informations.message }}</p>
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 
     export default {
         props: {
-            message: {} 
+            informations: {} 
         },
         data() {
             return {

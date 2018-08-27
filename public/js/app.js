@@ -66811,7 +66811,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
-        message: {}
+        informations: {}
     },
     data: function data() {
         return {
@@ -66831,20 +66831,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "profile-notification container" }, [
-      _c("p", { staticClass: "alert alert-success" }, [
-        _vm._v("Vos clés ont bien été réinitialiser")
-      ])
+  return _c("div", { staticClass: "profile-notification container" }, [
+    _c("p", { staticClass: "alert", class: _vm.informations.type }, [
+      _vm._v(_vm._s(_vm.informations.message))
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -66951,21 +66944,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             user: '',
             has_twitch: this.infos.has_twitch_id,
             show_notification: false,
-            edit_twitch_id: false
+            edit_twitch_id: false,
+            current_username: this.infos.username,
+            current_identifiant: this.infos.identifiant,
+            notifications_data: {
+                message: "",
+                type: ""
+            }
         };
     },
     created: function created() {},
 
     methods: {
         updateTwitchId: function updateTwitchId() {
-            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get("twitch/update?twitch=" + this.has_twitch + "").then(function (response) {
-                //this.updateToken(response);
+            var _this = this;
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get("twitch/update?twitch=" + this.has_twitch + "&username=" + this.user + "").then(function (response) {
+                _this.edit_twitch_id = false;
+                _this.show_notification = true;
+                _this.has_twitch = true;
+
+                _this.notifications_data.message = "Vos informations ont bien été mises à jour.";
+                _this.notifications_data.type = "alert-success";
+
+                _this.current_username = response.data['data'][0].login;
+                _this.current_identifiant = response.data['data'][0].id;
+            }).catch(function (error) {
+
+                _this.notifications_data.message = "Une erreur s'est produite.";
+                _this.notifications_data.type = "alert-danger";
+
+                _this.show_notification = true;
             });
 
-            console.log("je veux update le twitch id");
-            this.edit_twitch_id = false;
-            this.show_notification = true;
-            this.has_twitch = true;
             var self = this;
             setTimeout(function () {
                 self.show_notification = false;
@@ -66986,7 +66997,11 @@ var render = function() {
     "div",
     { staticClass: "profile-spotify-credentials" },
     [
-      _vm.show_notification ? _c("notification") : _vm._e(),
+      _vm.show_notification
+        ? _c("notification", {
+            attrs: { informations: _vm.notifications_data }
+          })
+        : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "container" }, [
         _c("h5", [_vm._v("Identifiant twitch")]),
@@ -67002,7 +67017,7 @@ var render = function() {
                     expression: "user"
                   }
                 ],
-                attrs: { type: "text" },
+                attrs: { type: "text", placeholder: "New user" },
                 domProps: { value: _vm.user },
                 on: {
                   input: function($event) {
@@ -67043,6 +67058,14 @@ var render = function() {
           : _c("div", [
               _vm.has_twitch
                 ? _c("div", [
+                    _c("span", { staticClass: "small text-muted" }, [
+                      _vm._v(
+                        _vm._s(_vm.current_username) +
+                          " - " +
+                          _vm._s(_vm.current_identifiant)
+                      )
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "button",
                       {
@@ -67054,6 +67077,17 @@ var render = function() {
                         }
                       },
                       [_vm._v("edit")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        attrs: {
+                          href: "https://twitch.tv/" + _vm.current_username,
+                          target: "_blank"
+                        }
+                      },
+                      [_vm._v("Voir le compte twitch")]
                     )
                   ])
                 : _c("div", [
