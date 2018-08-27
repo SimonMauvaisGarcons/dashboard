@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use Illuminate\Support\Facades\DB;
+use App\Services\Twitch\Twitch;
 use Illuminate\Http\Request;
 
 class TwitchController extends Controller
@@ -32,7 +35,7 @@ class TwitchController extends Controller
     }
 
 
-    public function updateUser() {
+    public function updateUser(Request $request) {
 
         $twitch_id = "9gro76wo69bdqkewo808ki8xabarsf";
 
@@ -54,10 +57,19 @@ class TwitchController extends Controller
         $id = $content['data'][0]['id'];
         $name = $content['data'][0]['login'];
 
+        
+
         /**
          * Store to database
         */
-        return $content['data'][0];
+        
+        if($request->input('twitch') == false){
+            Twitch::store($id, $name);
+        }else{
+            Twitch::update($id, $name);
+        }
+    
+        return $content;
 
     }
 }

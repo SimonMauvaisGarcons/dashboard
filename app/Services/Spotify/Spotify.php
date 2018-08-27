@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Services\Spotify;
+use Auth;
 use Illuminate\Http\Request;
 use App\SpotifyModel;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Spotify
@@ -23,6 +23,7 @@ class Spotify
 
     public static function storeInJson($content): string
     {   
+        
         $jsonPath = file_get_contents(base_path('resources/spotify.json'));
         $data = json_decode($jsonPath, true);
 
@@ -63,23 +64,47 @@ class Spotify
         return "Token update";
 
     }
+
+
     /**
      * Get spotify info by user connect
+     * @return Array : Avec les informations passés en paramêtres
     */
-    public static function getCredentials(): array {
+    public static function getCredentials(): object  {
 
-
+        /**
+         * Appel à la base de donnée 
+         * @return array 
+        */
         $query = DB::table('spotify')->select('token', 'refresh_token')->where('user_id', Auth::id())->get()->toArray();
+
+
+        /*
+        * Valide si l'utilisateur a des informations
+        * Il est posssible que l'utilisateur n'ai pas connecté son compte Spotify encore. 
+        */
         if(!empty($query)){
-            $has_credentials = "true";
+
+            $has_credentials = true;
+            $token = $query[0]->token;
+            $refresh_token = $query[0]->refresh_token;
+
         }else{
-            $has_credentials = "false";
+
+            $has_credentials = false;
+            $token = null;
+            $refresh_token = null;
         }
 
-        $data = [
+        
+
+        /**
+         *  Transformer l'objet de la query en tableau 
+         */
+        $data = (object)  [
             "has_credential" => $has_credentials,
-            "token" => $query[0]->token,
-            "refresh_token" =>$query[0]->refresh_token
+            "token" => $token,
+            "refresh_token" =>$refresh_token,
         ];
         return $data;
     }   

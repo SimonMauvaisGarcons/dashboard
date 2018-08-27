@@ -4,15 +4,16 @@
           <div class="col-md-8">
               <div class="card card-default">
                   <div class="card-header">Music component</div>
-                  <div class="card-body">
-                        <!-- <button type="button" name="button" v-on:click="login()">Log in to spotify</button> -->
-                        <!-- <button type="button" name="button" v-on:click="getAccesToken()">Get access token</button>
-                        <button type="button" name="button" v-on:click="getCurrentSong()">Get current song</button> -->
+
+                  <div class="card-body" v-if="spotify">
                         <h2>Song name : {{ title }}</h2>
                         <h3>Album name: {{ album }}</h3>
                         <img :src="imageUrl" />
-
                         <p v-show="is_playing">Currently playing</p>
+                  </div>
+                  <div class="card-body" v-else>
+                      <h2>Spotify est présentement indisponible.</h2>
+                      <p>Sois une publicité entre les chansons. Sois l'application n'est pas ouverte.</p>
                   </div>
               </div>
           </div>
@@ -23,27 +24,31 @@
 <script>
 
 
-import spotify from '../services/spotify/Spotify';
+//import spotify from '../services/spotify/Spotify';
 
 export default {
     props: {
     },
     data() {
         return {
+            spotify: false,
             id_song: '',
             title: '',
             album: '',
             imageUrl: '',
             is_playing: false,
+            
         };
     },
     created() {
         this.refreshTime();
         setInterval(this.refreshTime, 5000);
+
+        this.getCurrentSong();
     },
     methods: {
         refreshTime() {
-           this.getCurrentSong();
+          this.getCurrentSong();
         },
         getCurrentSong() {
           axios
@@ -53,12 +58,13 @@ export default {
             })
         },
         updateSong(response){
-            if(response.data.item === null){
-                this.title = "Je suis pauvre";
-                this.album = "Il y a une pub Spotify";
-                this.imageUrl = "";
-            }else{
 
+            console.log(response);
+
+            if(response.data.item === null || response.data === ""){
+                this.spotify = false;
+            }else{
+                this.spotify = true;
                 this.is_playing = response.data.is_playing;
                 this.title = response.data.item.name;
                 this.album = response.data.item.album.name;

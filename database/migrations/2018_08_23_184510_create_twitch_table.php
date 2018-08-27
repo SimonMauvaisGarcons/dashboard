@@ -16,7 +16,9 @@ class CreateTwitchTable extends Migration
         Schema::create('twitch', function (Blueprint $table) {
             $table->integer('user_id')->unsigned()->unique();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->string('identifiant');
             $table->string('player_username');
+            $table->timestamps();
         });
     }
 

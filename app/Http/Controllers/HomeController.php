@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\Spotify\Spotify;
+use App\Services\Twitch\Twitch;
 
 class HomeController extends Controller
 {
@@ -25,6 +26,9 @@ class HomeController extends Controller
     public function index()
     {
         $spotify = Spotify::getCredentials();
-        return view('profile', ['spotify' => $spotify]);
+        $twitch = Twitch::get();
+
+        
+        return view('profile', ['spotify' => $spotify, 'twitch' => $twitch]);
     }
 }

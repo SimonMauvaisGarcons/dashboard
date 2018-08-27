@@ -66224,7 +66224,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_spotify_Spotify__ = __webpack_require__(197);
+//
 //
 //
 //
@@ -66249,22 +66249,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 
-
+//import spotify from '../services/spotify/Spotify';
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {},
     data: function data() {
         return {
+            spotify: false,
             id_song: '',
             title: '',
             album: '',
             imageUrl: '',
             is_playing: false
+
         };
     },
     created: function created() {
         this.refreshTime();
         setInterval(this.refreshTime, 5000);
+
+        this.getCurrentSong();
     },
 
     methods: {
@@ -66279,12 +66283,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         updateSong: function updateSong(response) {
-            if (response.data.item === null) {
-                this.title = "Je suis pauvre";
-                this.album = "Il y a une pub Spotify";
-                this.imageUrl = "";
-            } else {
 
+            console.log(response);
+
+            if (response.data.item === null || response.data === "") {
+                this.spotify = false;
+            } else {
+                this.spotify = true;
                 this.is_playing = response.data.is_playing;
                 this.title = response.data.item.name;
                 this.album = response.data.item.album.name;
@@ -66313,28 +66318,38 @@ var render = function() {
             _vm._v("Music component")
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("h2", [_vm._v("Song name : " + _vm._s(_vm.title))]),
-            _vm._v(" "),
-            _c("h3", [_vm._v("Album name: " + _vm._s(_vm.album))]),
-            _vm._v(" "),
-            _c("img", { attrs: { src: _vm.imageUrl } }),
-            _vm._v(" "),
-            _c(
-              "p",
-              {
-                directives: [
+          _vm.spotify
+            ? _c("div", { staticClass: "card-body" }, [
+                _c("h2", [_vm._v("Song name : " + _vm._s(_vm.title))]),
+                _vm._v(" "),
+                _c("h3", [_vm._v("Album name: " + _vm._s(_vm.album))]),
+                _vm._v(" "),
+                _c("img", { attrs: { src: _vm.imageUrl } }),
+                _vm._v(" "),
+                _c(
+                  "p",
                   {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.is_playing,
-                    expression: "is_playing"
-                  }
-                ]
-              },
-              [_vm._v("Currently playing")]
-            )
-          ])
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.is_playing,
+                        expression: "is_playing"
+                      }
+                    ]
+                  },
+                  [_vm._v("Currently playing")]
+                )
+              ])
+            : _c("div", { staticClass: "card-body" }, [
+                _c("h2", [_vm._v("Spotify est présentement indisponible.")]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "Sois une publicité entre les chansons. Sois l'application n'est pas ouverte."
+                  )
+                ])
+              ])
         ])
       ])
     ])
@@ -66361,32 +66376,7 @@ if (false) {
 /* 194 */,
 /* 195 */,
 /* 196 */,
-/* 197 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Spotify = function () {
-    function Spotify() {
-        _classCallCheck(this, Spotify);
-    }
-
-    _createClass(Spotify, [{
-        key: "storeInJson",
-        value: function storeInJson(data) {
-            console.log(data);
-        }
-    }]);
-
-    return Spotify;
-}();
-
-/* unused harmony default export */ var _unused_webpack_default_export = (new Spotify());
-
-/***/ }),
+/* 197 */,
 /* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -66940,17 +66930,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: {},
+    props: {
+        infos: {}
+    },
     components: {
         notification: __WEBPACK_IMPORTED_MODULE_1__Notification___default.a
     },
     data: function data() {
         return {
+            user: '',
+            has_twitch: this.infos.has_twitch_id,
             show_notification: false,
             edit_twitch_id: false
         };
@@ -66959,16 +66958,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         updateTwitchId: function updateTwitchId() {
-
-            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get("twitch/update").then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get("twitch/update?twitch=" + this.has_twitch + "").then(function (response) {
                 //this.updateToken(response);
-
             });
 
             console.log("je veux update le twitch id");
             this.edit_twitch_id = false;
-
             this.show_notification = true;
+            this.has_twitch = true;
             var self = this;
             setTimeout(function () {
                 self.show_notification = false;
@@ -66992,11 +66989,30 @@ var render = function() {
       _vm.show_notification ? _c("notification") : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "container" }, [
-        _c("h5", [_vm._v(" Identifiant twitch")]),
+        _c("h5", [_vm._v("Identifiant twitch")]),
         _vm._v(" "),
         _vm.edit_twitch_id
           ? _c("div", [
-              _c("input", { attrs: { type: "text", value: "Ninja" } }),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.user,
+                    expression: "user"
+                  }
+                ],
+                attrs: { type: "text" },
+                domProps: { value: _vm.user },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.user = $event.target.value
+                  }
+                }
+              }),
               _vm._v(" "),
               _c(
                 "button",
@@ -67009,10 +67025,7 @@ var render = function() {
                   }
                 },
                 [_vm._v("Save")]
-              )
-            ])
-          : _c("div", [
-              _c("span", [_vm._v("Ninja")]),
+              ),
               _vm._v(" "),
               _c(
                 "button",
@@ -67020,12 +67033,43 @@ var render = function() {
                   staticClass: "btn btn-link",
                   on: {
                     click: function($event) {
-                      _vm.edit_twitch_id = true
+                      _vm.edit_twitch_id = false
                     }
                   }
                 },
-                [_vm._v("edit")]
+                [_vm._v("Cancel")]
               )
+            ])
+          : _c("div", [
+              _vm.has_twitch
+                ? _c("div", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-link",
+                        on: {
+                          click: function($event) {
+                            _vm.edit_twitch_id = true
+                          }
+                        }
+                      },
+                      [_vm._v("edit")]
+                    )
+                  ])
+                : _c("div", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-link",
+                        on: {
+                          click: function($event) {
+                            _vm.edit_twitch_id = true
+                          }
+                        }
+                      },
+                      [_vm._v("Ajouter un identifiant")]
+                    )
+                  ])
             ])
       ])
     ],
