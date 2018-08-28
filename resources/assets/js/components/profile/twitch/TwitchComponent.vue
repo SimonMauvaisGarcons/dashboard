@@ -5,13 +5,13 @@
             <h5>Identifiant twitch</h5>
             <div v-if="edit_twitch_id">
                 <input type="text" v-model="user" placeholder="New user">
-                <button class="btn btn-link" v-on:click="updateTwitchId()">Save</button>
+                <button class="btn btn-primary" v-on:click="updateTwitchId()">Save</button>
                 <button class="btn btn-link" v-on:click="edit_twitch_id = false">Cancel</button>
             </div>
             <div v-else>
                 <div v-if="has_twitch">
                     <span class="small text-muted">{{ current_username }} - {{ current_identifiant }}</span>
-                    <button class="btn btn-link" v-on:click='edit_twitch_id = true'>edit</button>
+                    <button class="btn btn-primary" v-on:click='edit_twitch_id = true'>edit</button>
                     <a v-bind:href="'https://twitch.tv/'+ current_username " target="_blank">Voir le compte twitch</a>
                 </div>
                 <div v-else>

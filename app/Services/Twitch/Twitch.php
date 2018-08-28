@@ -41,14 +41,13 @@ class Twitch
         * Il est posssible que l'utilisateur n'ai pas connecté son compte Spotify encore. 
         */
         if(!empty($query)){
-
             $has_twitch_id = true;
             $id = $query[0]->identifiant;
             $username = $query[0]->player_username;
-
         }else{
             $has_twitch_id= false;
             $id = null;
+            $username = "";
         }
 
         

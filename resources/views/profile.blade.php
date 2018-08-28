@@ -35,6 +35,14 @@
                 <div class="card-body">
                     <twitchsetting v-bind:infos="{{ json_encode($twitch) }}"></twitchsetting>
                 </div>
+            </div>
+
+            <br>
+            <div class="card">
+                <div class="card-header">Évenement</div>
+                <div class="card-body">
+                    <evenementprofile v-bind:liste="{{ json_encode($evenements) }}"></evenementprofile>
+                </div>
             </div> 
         </div>
     </div>
