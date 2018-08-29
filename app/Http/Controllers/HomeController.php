@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Services\Spotify\Spotify;
 use App\Services\Twitch\Twitch;
 use App\Services\Evenements\Evenements;
+use Illuminate\Support\Facades\Log;
+
 
 class HomeController extends Controller
 {
@@ -16,6 +18,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
+        Log::channel('dashboard')->info("Je viens de loader le profile");
         $this->middleware('auth');
     }
 
