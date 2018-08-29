@@ -63,8 +63,8 @@ class TwitchController extends Controller
         /**
          * Store to database
         */
-        
-        if($request->input('twitch') == false){
+       
+        if($request->input('twitch') == "false"){
             Twitch::store($id, $name);
         }else{
             Twitch::update($id, $name);

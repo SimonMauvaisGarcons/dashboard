@@ -3,6 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
+
         <div class="col-md-8">
              <div class="card">
                 <div class="card-header">Dashboard</div>
@@ -16,13 +17,19 @@
                 </div>
             </div>
             <br>
+
+
+           
+
            <div class="card">
                 <div class="card-body">
                     <a class="btn btn-link" href="/dashboard">Aller au dashboard</a>
                 </div>
             </div>
-            <br>
-             <div class="card">
+           
+
+
+            <div class="card">
                 <div class="card-header">Spotify setting</div>
                 <div class="card-body">
                     <spotify v-bind:credentials="{{ json_encode($spotify) }}"></spotify>

@@ -39,6 +39,12 @@ class EventController extends Controller
 
         $id = $request->input('id');
         Evenements::delete($id);
+
+    }
+
+    public function update(Request $request) {
+        
+        return Evenements::update($request);
         
     }
 }

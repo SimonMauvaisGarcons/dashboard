@@ -56,15 +56,15 @@ Route::group(['middleware' => ['auth']], function () {
 
     /**
      * Upadte twitch user
-     */
+    */
     Route::get('twitch/update', 'TwitchController@updateUser');
-
 
      /**
      * Add event
      */
     Route::post('evenement/add', 'EventController@add');
     Route::get('evenement/delete', 'EventController@delete');
+    Route::post('evenement/update', 'EventController@update');
 
 });
 

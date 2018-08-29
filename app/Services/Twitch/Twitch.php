@@ -14,15 +14,18 @@ class Twitch
 
     public static function store($id , $player_username)
     {   
+
         return TwitchModel::create([
             'user_id' => Auth::id(),
             'identifiant' => $id,
             'player_username' => $player_username,
         ]);
+
     }
 
     public static function update($id, $player_username)
     {   
+
         DB::table('twitch')->where('user_id', Auth::id())->update(['identifiant' => $id, 'player_username' => $player_username]);
         return 'twitch user update';
     }

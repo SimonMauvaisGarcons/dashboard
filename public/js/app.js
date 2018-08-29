@@ -66682,7 +66682,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             current_token: this.credentials.token,
-            show_notification: false
+            show_notification: false,
+            notifications_data: {
+                message: "",
+                type: ""
+            }
 
         };
     },
@@ -66699,7 +66703,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         updateToken: function updateToken(response) {
-            this.current_token = response.data;
+            this.current_token = response.data.access_token;
+            this.notifications_data.message = "Les accèss Spotify ont été mis à jour.";
+            this.notifications_data.type = "alert-success";
             this.show_notification = true;
             var self = this;
             setTimeout(function () {
@@ -66776,7 +66782,11 @@ var render = function() {
     "div",
     { staticClass: "profile-spotify-credentials" },
     [
-      _vm.show_notification ? _c("notification") : _vm._e(),
+      _vm.show_notification
+        ? _c("notification", {
+            attrs: { informations: _vm.notifications_data }
+          })
+        : _vm._e(),
       _vm._v(" "),
       _vm.credentials.has_credential
         ? _c("div", [
@@ -67164,12 +67174,12 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Notification__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Notification___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Notification__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AddEventComponent__ = __webpack_require__(204);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AddEventComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__AddEventComponent__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ListeEventComponent__ = __webpack_require__(213);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ListeEventComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__ListeEventComponent__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__AddEventComponent__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__AddEventComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__AddEventComponent__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ListeEventComponent__ = __webpack_require__(213);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ListeEventComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__ListeEventComponent__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__UpdateComponent__ = __webpack_require__(216);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__UpdateComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__UpdateComponent__);
 //
 //
 //
@@ -67187,22 +67197,55 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+
     props: {
         liste: {}
     },
     components: {
-        notification: __WEBPACK_IMPORTED_MODULE_1__Notification___default.a,
-        addevent: __WEBPACK_IMPORTED_MODULE_2__AddEventComponent___default.a,
-        listeevent: __WEBPACK_IMPORTED_MODULE_3__ListeEventComponent___default.a
+        addevent: __WEBPACK_IMPORTED_MODULE_1__AddEventComponent___default.a,
+        listeevent: __WEBPACK_IMPORTED_MODULE_2__ListeEventComponent___default.a,
+        updateevent: __WEBPACK_IMPORTED_MODULE_3__UpdateComponent___default.a
     },
     data: function data() {
         return {
-            show_notification: false
+
+            show_notification: false,
+            current_liste: this.liste,
+            tobeupdate: ''
         };
     },
-    created: function created() {},
 
-    methods: {}
+
+    computed: {},
+
+    methods: {
+        addToListe: function addToListe(event) {
+            console.log(event);
+            this.current_liste.push({
+                created_at: event.created_at,
+                date: event.date,
+                description: event.description,
+                id: event.id,
+                titre: event.titre,
+                type: event.type,
+                updated_at: event.updated_at,
+                user_id: event.user_id
+            });
+        },
+        deleteEvent: function deleteEvent(index) {
+            console.log("Delete element");
+
+            var id = event.target.closest("tr").getAttribute("data-id");
+            var path = "evenement/delete?id=" + id + "";
+            this.current_liste.splice(index, 1);
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(path).then(function (response) {});
+        },
+        updateEvenement: function updateEvenement(index, event) {
+            console.log(event);
+            this.tobeupdate = event;
+        }
+    }
 });
 
 /***/ }),
@@ -67326,11 +67369,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     created: function created() {},
 
+
     methods: {
         addEvent: function addEvent() {
             var _this = this;
 
-            console.log("ajouter un event");
             __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post("/evenement/add", {
                 name: this.title,
                 description: this.description,
@@ -67341,6 +67384,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.erreurs = response.data.errors;
                 } else {
                     _this.isadded = false;
+                    _this.$parent.addToListe(response.data);
                 }
             });
         },
@@ -67634,7 +67678,9 @@ var render = function() {
         [_vm._v("Ajouter un evenement")]
       ),
       _vm._v(" "),
-      _c("addevent")
+      _c("addevent"),
+      _vm._v(" "),
+      _c("updateevent", { attrs: { toupdate: _vm.tobeupdate } })
     ],
     1
   )
@@ -67729,6 +67775,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -67740,22 +67805,61 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     components: {},
     data: function data() {
         return {
-            current_liste: this.listeevenement
+            orderby: ''
         };
     },
     created: function created() {},
 
     methods: {
-        deleteEvent: function deleteEvent(index) {
+        updateOrder: function updateOrder(typeOrder) {
 
-            var id = event.target.closest("li").getAttribute("data-id");
-            var path = "evenement/delete?id=" + id + "";
-            this.current_liste.splice(index, 1);
+            this.orderby = typeOrder;
+            this.sortby();
+        },
 
-            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(path).then(function (response) {});
+        /**
+        * Return la liste classé par titre
+        */
+        sortby: function sortby() {
+            switch (this.orderby) {
+                case "id":
+                    this.listeevenement.sort(dynamicSort("id"));
+                    break;
+                case "titre":
+                    this.listeevenement.sort(dynamicSort("titre"));
+                    break;
+                case "date":
+                    this.listeevenement.sort(function (a, b) {
+                        return new Date(a.date) - new Date(b.date);
+                    });
+                    break;
+                case "type":
+                    this.listeevenement.sort(dynamicSort("type"));
+
+                    break;
+            }
         }
+
     }
-});
+    /**
+    * Function to sort alphabetically an array of objects by some specific key.
+    * 
+    * @param {String} property Key of the object to sort.
+    */
+});function dynamicSort(property) {
+    var sortOrder = 1;
+    if (property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a, b) {
+        if (sortOrder == -1) {
+            return b[property].localeCompare(a[property]);
+        } else {
+            return a[property].localeCompare(b[property]);
+        }
+    };
+}
 
 /***/ }),
 /* 215 */
@@ -67766,42 +67870,121 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "liste-evenement" }, [
-    _c(
-      "ul",
-      _vm._l(_vm.current_liste, function(event, index) {
-        return _c(
-          "li",
-          { key: event.id, attrs: { "data-id": event.id_event } },
-          [
-            _c("p", { staticClass: "small" }, [
-              _vm._v(
-                "  \n                " +
-                  _vm._s(event.titre) +
-                  " - " +
-                  _vm._s(event.date) +
-                  " - " +
-                  _vm._s(event.type) +
-                  "\n                "
-              ),
-              _c("button", { staticClass: "btn btn-link" }, [_vm._v("Edit")]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-danger",
-                  on: {
-                    click: function($event) {
-                      _vm.deleteEvent(index)
-                    }
-                  }
-                },
-                [_vm._v("Supprimer")]
-              )
-            ])
-          ]
-        )
-      })
-    )
+    Object.keys(_vm.listeevenement).length === 0
+      ? _c("div", [_c("p", [_vm._v("Ajouter vos événements !")])])
+      : _c("div", [
+          _c("table", { staticClass: "table" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Id")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-link",
+                      on: {
+                        click: function($event) {
+                          _vm.updateOrder("titre")
+                        }
+                      }
+                    },
+                    [_vm._v("Titre")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-link",
+                      on: {
+                        click: function($event) {
+                          _vm.updateOrder("date")
+                        }
+                      }
+                    },
+                    [_vm._v("Date")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-link",
+                      on: {
+                        click: function($event) {
+                          _vm.updateOrder("type")
+                        }
+                      }
+                    },
+                    [_vm._v("Type")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("-")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("-")])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.listeevenement, function(event, index) {
+                return _c(
+                  "tr",
+                  { key: event.id, attrs: { "data-id": event.id_event } },
+                  [
+                    _c("th", { attrs: { scope: "row" } }, [
+                      _vm._v(_vm._s(event.id_event))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(event.titre))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(event.date))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(event.type))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-link",
+                          attrs: {
+                            "data-toggle": "modal",
+                            "data-target": "#updateevent"
+                          },
+                          on: {
+                            click: function($event) {
+                              _vm.$parent.updateEvenement(index, event)
+                            }
+                          }
+                        },
+                        [_vm._v("Edit")]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          on: {
+                            click: function($event) {
+                              _vm.$parent.deleteEvent(index)
+                            }
+                          }
+                        },
+                        [_vm._v("Supprimer")]
+                      )
+                    ])
+                  ]
+                )
+              })
+            )
+          ])
+        ])
   ])
 }
 var staticRenderFns = []
@@ -67811,6 +67994,418 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-5f5afe3c", module.exports)
+  }
+}
+
+/***/ }),
+/* 216 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(217)
+/* template */
+var __vue_template__ = __webpack_require__(218)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/profile/evenements/UpdateComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6625c32c", Component.options)
+  } else {
+    hotAPI.reload("data-v-6625c32c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 217 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Notification__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Notification___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Notification__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        toupdate: {}
+    },
+    components: {
+        notification: __WEBPACK_IMPORTED_MODULE_1__Notification___default.a
+    },
+    data: function data() {
+        return {
+            erreurs: [],
+            show_notification: false,
+            notifications_data: {
+                message: "",
+                type: ""
+            }
+        };
+    },
+    created: function created() {},
+
+
+    methods: {
+        updateEvent: function updateEvent() {
+            var _this = this;
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post("/evenement/update", {
+                name: this.toupdate.titre,
+                description: this.toupdate.description,
+                date: this.toupdate.date,
+                type: this.toupdate.type,
+                id_event: this.toupdate.id_event
+            }).then(function (response) {
+                if (response.data.errors) {
+                    _this.erreurs = response.data.errors;
+                } else {
+                    _this.erreurs = [];
+                    _this.notifications_data.message = "L'événement a bien été modifié";
+                    _this.notifications_data.type = "alert-success";
+                    _this.show_notification = true;
+
+                    var self = _this;
+                    setTimeout(function () {
+                        self.show_notification = false;
+                    }, 2000);
+                }
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 218 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "add-evenement modal fade", attrs: { id: "updateevent" } },
+    [
+      _c("div", { staticClass: "modal-dialog" }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _c(
+            "form",
+            {
+              staticClass: "modal-body",
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.updateEvent($event)
+                }
+              }
+            },
+            [
+              _vm.show_notification
+                ? _c("notification", {
+                    attrs: { informations: _vm.notifications_data }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _c(
+                "div",
+                [
+                  _vm._v(
+                    "\n                  Titre de l'événement\n                  "
+                  ),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.toupdate.titre,
+                        expression: "toupdate.titre"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.toupdate.titre },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.toupdate, "titre", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm._l(this.erreurs.name, function(erreur) {
+                    return _c(
+                      "p",
+                      { key: erreur, staticClass: "text-danger" },
+                      [_vm._v(_vm._s(erreur))]
+                    )
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c(
+                "div",
+                [
+                  _vm._v("\n                  Description\n                  "),
+                  _c(
+                    "textarea",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.toupdate.description,
+                          expression: "toupdate.description"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      domProps: { value: _vm.toupdate.description },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.toupdate,
+                            "description",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    },
+                    [_vm._v("Description")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(this.erreurs.description, function(erreur) {
+                    return _c(
+                      "p",
+                      { key: erreur, staticClass: "text-danger" },
+                      [_vm._v(_vm._s(erreur))]
+                    )
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c(
+                "div",
+                [
+                  _vm._v("\n                  Date\n                  "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.toupdate.date,
+                        expression: "toupdate.date"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "date" },
+                    domProps: { value: _vm.toupdate.date },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.toupdate, "date", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm._l(this.erreurs.date, function(erreur) {
+                    return _c(
+                      "p",
+                      { key: erreur, staticClass: "text-danger" },
+                      [_vm._v(_vm._s(erreur))]
+                    )
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c(
+                "div",
+                [
+                  _vm._v(
+                    "\n                  Type d'événement               \n                  "
+                  ),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.toupdate.type,
+                          expression: "toupdate.type"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.toupdate,
+                            "type",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    [
+                      _c("option", [_vm._v(" Fête ")]),
+                      _vm._v(" "),
+                      _c("option", [_vm._v(" Soupé ")]),
+                      _vm._v(" "),
+                      _c("option", [_vm._v(" Autre ")])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(this.erreurs.type, function(erreur) {
+                    return _c(
+                      "p",
+                      { key: erreur, staticClass: "text-danger" },
+                      [_vm._v(_vm._s(erreur))]
+                    )
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.toupdate.id_event,
+                    expression: "toupdate.id_event"
+                  }
+                ],
+                attrs: { type: "hidden" },
+                domProps: { value: _vm.toupdate.id_event },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.toupdate, "id_event", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "btn btn-primary",
+                attrs: { type: "submit", value: "Mettre à jour" }
+              })
+            ],
+            1
+          )
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6625c32c", module.exports)
   }
 }
 

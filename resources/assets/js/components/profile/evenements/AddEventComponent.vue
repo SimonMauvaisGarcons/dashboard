@@ -66,27 +66,30 @@
                 isadded: true,
             };
         },
+
         created() {
             
         },
+
+
         methods: {
+
           addEvent() {
-            console.log("ajouter un event");
             axios
             .post("/evenement/add",{
                 name: this.title,
                 description: this.description,
                 date: this.date,
                 type: this.type,
-                } 
+              } 
             )
           	.then((response) => {
-                  if(response.data.errors){
-                    this.erreurs = response.data.errors;
-                  }else{
-                     this.isadded = false;
-                  }
-                  
+                if(response.data.errors){
+                this.erreurs = response.data.errors;
+                }else{
+                    this.isadded = false;
+                    this.$parent.addToListe(response.data);
+                }
             })
           },
 

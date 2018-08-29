@@ -1,6 +1,6 @@
 <template>
   <div class="profile-spotify-credentials">
-      <notification v-if="show_notification"></notification>
+      <notification v-if="show_notification" :informations="notifications_data"></notification>
       <div v-if="credentials.has_credential">
         <button class="btn btn-link" v-on:click="refreshToken()">Réinitialiser vos clés d'identifications</button>
         <br><br>
@@ -34,6 +34,10 @@
             return {
                 current_token: this.credentials.token ,
                 show_notification: false,
+                notifications_data: {
+                    message: "",
+                    type: "",
+                }
                 
             };
         },
@@ -52,7 +56,9 @@
          },
           
         updateToken(response) {
-            this.current_token = response.data;
+            this.current_token = response.data.access_token;
+            this.notifications_data.message = "Les accèss Spotify ont été mis à jour.";
+            this.notifications_data.type = "alert-success";
             this.show_notification = true;
             const self = this;
             setTimeout(function(){
