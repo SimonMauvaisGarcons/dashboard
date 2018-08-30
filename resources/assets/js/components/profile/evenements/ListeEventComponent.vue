@@ -14,6 +14,7 @@
                 <th scope="col"><button class="btn btn-link" v-on:click="updateOrder('type')">Type</button></th>
                 <th scope="col">-</th>
                 <th scope="col">-</th>
+                <th scope="col">Time</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,6 +25,7 @@
                     <td>{{ event.type }}</td>
                     <td><button class="btn btn-link" @click="$parent.updateEvenement(index, event)" data-toggle="modal" data-target="#updateevent">Edit</button></td>
                     <td><button class="btn btn-danger" @click="$parent.deleteEvent(index)">Supprimer</button></td>
+                    <td><span class="small"> {{ event.time }} </span></td>
                 </tr>
             </tbody>
         </table>
@@ -49,7 +51,9 @@
             };
         },
         created() {
-            
+
+
+
         },
         methods: {
             updateOrder(typeOrder) {

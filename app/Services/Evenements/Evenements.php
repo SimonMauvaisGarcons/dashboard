@@ -25,13 +25,13 @@ class Evenements
             return response()->json(['errors'=>$validator->errors()]);
 
         }else{
-
-            return DB::table('evenements')->where('id_event', $request->input('id_event'))->update([
+            $query = DB::table('evenements')->where('id_event', $request->input('id_event'))->update([
                 'titre' => $request->input('name'), 
                 'description' => $request->input('description'),
                 'date' => $request->input('date'),
                 'type' => $request->input('type'),
             ]);
+            return $request->all();
             
         }
 
@@ -44,6 +44,13 @@ class Evenements
          * @return array 
         */
         $query = DB::table('evenements')->select('*')->where('user_id', Auth::id())->get()->toArray();
+
+
+        foreach($query as $el):
+            $el->time = "";
+        endforeach;
+
+
         return $query;
     }
 

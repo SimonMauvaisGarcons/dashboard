@@ -67214,11 +67214,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             tobeupdate: ''
         };
     },
-
+    created: function created() {
+        var _this = this;
+        this.current_liste.map(function (value, key) {
+            value.time = _this.gettime(value.date);
+        });
+    },
 
     computed: {},
 
     methods: {
+        gettime: function gettime(time) {
+            var now = new Date();
+            now.setHours(0, 0, 0, 0);
+            var event_date = new Date(time);
+
+            if (event_date < now) {
+                return "il y a " + this.diffdate(event_date, now) + " jour(s)";
+            } else {
+                var nbrjours = this.diffdate(event_date, now) * -1;
+                return "Dans" + nbrjours + "jour(s)";
+            }
+        },
+        diffdate: function diffdate(d1, d2) {
+
+            var WNbJours = d2.getTime() - d1.getTime();
+            return Math.ceil(WNbJours / (1000 * 60 * 60 * 24));
+        },
         addToListe: function addToListe(event) {
             console.log(event);
             this.current_liste.push({
@@ -67242,7 +67264,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(path).then(function (response) {});
         },
         updateEvenement: function updateEvenement(index, event) {
-            console.log(event);
+
             this.tobeupdate = event;
         }
     }
@@ -67794,6 +67816,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -67925,7 +67949,9 @@ var render = function() {
                 _vm._v(" "),
                 _c("th", { attrs: { scope: "col" } }, [_vm._v("-")]),
                 _vm._v(" "),
-                _c("th", { attrs: { scope: "col" } }, [_vm._v("-")])
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("-")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Time")])
               ])
             ]),
             _vm._v(" "),
@@ -67978,6 +68004,12 @@ var render = function() {
                         },
                         [_vm._v("Supprimer")]
                       )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("span", { staticClass: "small" }, [
+                        _vm._v(" " + _vm._s(event.time) + " ")
+                      ])
                     ])
                   ]
                 )
@@ -68137,6 +68169,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.notifications_data.message = "L'événement a bien été modifié";
                     _this.notifications_data.type = "alert-success";
                     _this.show_notification = true;
+
+                    _this.toupdate.time = _this.$parent.gettime(response.data.date);
 
                     var self = _this;
                     setTimeout(function () {

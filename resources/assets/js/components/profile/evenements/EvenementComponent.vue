@@ -33,12 +33,37 @@
             };
         },
 
-        
+          
+        created() {
+            const _this = this;
+            this.current_liste.map(function(value, key) {
+                value.time = _this.gettime(value.date);
+            });
+        },
         computed: {
-  
+
         },
 
         methods: {
+
+            gettime(time){
+                let now = new Date();
+                now.setHours(0,0,0,0);
+                let event_date = new Date(time);
+
+                if (event_date < now) {       
+                    return "il y a " + this.diffdate(event_date, now)+ " jour(s)";
+                } else {
+                    const nbrjours = this.diffdate(event_date, now) * -1;
+                    return "Dans" + nbrjours + "jour(s)";
+                }
+            },
+            diffdate(d1,d2){
+        
+                var WNbJours = d2.getTime() - d1.getTime();
+                return Math.ceil(WNbJours/(1000*60*60*24));
+            },
+
             addToListe(event) {
                 console.log(event);
                 this.current_liste.push({
@@ -68,11 +93,14 @@
             },
 
             updateEvenement(index, event){
-                console.log(event);
+
                 this.tobeupdate = event;
             },  
         },
   }
+
+
+
 
 
 

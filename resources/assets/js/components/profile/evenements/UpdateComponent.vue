@@ -82,10 +82,13 @@
                 if(response.data.errors){
                     this.erreurs = response.data.errors;
                 }else{
-                     this.erreurs = [];
-                     this.notifications_data.message = "L'événement a bien été modifié";
-                     this.notifications_data.type = "alert-success";
-                     this.show_notification = true;
+                    this.erreurs = [];
+                    this.notifications_data.message = "L'événement a bien été modifié";
+                    this.notifications_data.type = "alert-success";
+                    this.show_notification = true;
+
+                    
+                    this.toupdate.time = this.$parent.gettime(response.data.date);
 
                     const self = this;
                         setTimeout(function(){
